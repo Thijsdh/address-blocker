@@ -1,0 +1,24 @@
+{
+	"name": "address-blocker",
+	"version": "1.0.0",
+	"description": "Hide your private information in your browser.",
+	"author": "Thijs den Hartog",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"build": "npm run clean && webpack --mode production && cp -r manifest.json icons/ dist/",
+		"clean": "rm -rf dist/",
+		"dev": "webpack --watch --mode development",
+		"package": "export $(cat .env | xargs) && cd dist && web-ext sign && cd .."
+	},
+	"devDependencies": {
+		"@types/chrome": "^0.0.128",
+		"css-loader": "^5.0.1",
+		"html-loader": "^1.3.2",
+		"ts-loader": "^8.0.14",
+		"typescript": "^4.1.3",
+		"web-ext": "^5.4.1",
+		"webpack": "^5.12.2",
+		"webpack-cli": "^4.3.1"
+	}
+}

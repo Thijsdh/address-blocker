@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"module": "es6",
+		"lib": ["DOM", "ES2020"],
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"outDir": "./dist/",
+		"allowJs": true
+	},
+	"include": ["src/**/*", "config.ts"],
+	"exclude": ["node_modules", "**/*.spec.ts"]
+}
