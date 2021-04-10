@@ -1,9 +1,20 @@
 (() => {
+	let filters: string[];
+
 	function getEnabled() {
 		return new Promise((resolve, reject) => {
 			chrome.storage.sync.get('enabled', ({ enabled }) => {
 				resolve(typeof enabled === 'boolean' ? enabled : true);
 				chrome.browserAction.setIcon({ path: `../icons/icon${enabled ? '' : '-disabled'}-48.png` });
+			});
+		});
+	}
+
+	function loadFilters() {
+		return new Promise((resolve, reject) => {
+			chrome.storage.sync.get('filters', ({ filters: storedFilters }) => {
+				filters = typeof storedFilters === 'object' ? storedFilters : [];
+				resolve(filters);
 			});
 		});
 	}
@@ -14,15 +25,7 @@
 	});
 
 	chrome.tabs.onActivated.addListener(tab => {
-		console.log(tab.tabId);
 		chrome.tabs.sendMessage(tab.tabId, { msg: 'tabActivated' });
-	});
-
-	chrome.browserAction.onClicked.addListener(tab => {
-		chrome.storage.sync.get('enabled', res => {
-			chrome.storage.sync.set({ 'enabled': !res.enabled });
-			chrome.tabs.sendMessage(tab.id, { msg: 'toggleEnabled' });
-		});
 	});
 
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -32,5 +35,18 @@
 			getEnabled().then(sendResponse);
 			return true;
 		}
+
+		if (msg.msg === 'getFilters') {
+			sendResponse(filters);
+			return true;
+		}
+
+		if (msg.msg === 'setFilters') {
+			chrome.storage.sync.set({ filters: msg.filters });
+			filters = msg.filters;
+			return true;
+		}
 	});
+
+	loadFilters();
 })();

@@ -25,7 +25,9 @@
 	"browser_action": {
 		"default_icon": {
 			"48": "icons/icon-disabled-48.png"
-		}
+		},
+		"default_title": "Address Blocker",
+		"default_popup": "dist/popups/main.html"
 	},
 	"browser_specific_settings": {
 		"gecko": {

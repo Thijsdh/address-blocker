@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Address Blocker</title>
+</head>
+<body>
+    <header>
+        <button id="toggle-button"></button>
+    </header>
+
+    <footer>
+        <ul class="options">
+            <li class="options--item">
+                <button class="options--button" data-toggle-option="filters">
+                    Edit filters
+                </button>
+                <section class="options--section hidden" data-option="filters">
+                    <textarea
+                        id="options--filters"
+                        placeholder="Enter your filters here, seperated by a new line.&#10;Input is case insensitive.&#10;Keep filters as short as possible."></textarea>
+                </section>
+            </li>
+        </ul>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
