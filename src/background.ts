@@ -3,7 +3,7 @@
 		return new Promise((resolve, reject) => {
 			chrome.storage.sync.get('enabled', ({ enabled }) => {
 				resolve(typeof enabled === 'boolean' ? enabled : true);
-				chrome.browserAction.setIcon({ path: `../icons/icon-${enabled ? 'enabled' : 'disabled'}-48.png` });
+				chrome.browserAction.setIcon({ path: `../icons/icon${enabled ? '' : '-disabled'}-48.png` });
 			});
 		});
 	}
@@ -28,14 +28,7 @@
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 		if (typeof msg.msg === 'undefined') return;
 
-		if (msg.msg === 'setStatus') {
-			chrome.tabs.query({ active: true, windowType: "normal", currentWindow: true }, function (d) {
-				var tabId = d[0].id;
-				chrome.browserAction.setIcon({ path: `../icons/icon-${msg.status}-48.png`, tabId });
-			});
-			if (msg.status !== 'inactive') chrome.storage.sync.set({ 'enabled': msg.status }, () => sendResponse());
-			return true;
-		} else if (msg.msg === 'getEnabled') {
+		if (msg.msg === 'getEnabled') {
 			getEnabled().then(sendResponse);
 			return true;
 		}
