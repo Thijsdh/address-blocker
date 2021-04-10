@@ -1,39 +1,35 @@
 let filters: string[];
 const ignoreTags = new Set(['br', 'head', 'link', 'meta', 'script', 'style']);
 
-function parseNode(node: HTMLElement) {
-	if (ignoreTags.has(node.localName)) return;
+function parseNode(node: Node) {
+	if (ignoreTags.has((node as HTMLElement).localName)) return;
 
-	let x = '';
-	for (let i = 0; i < node.childNodes.length; i++) {
-		const childNode = node.childNodes[i];
-		x += childNode.textContent;
-		if (childNode.nodeType !== childNode.TEXT_NODE) {
-			if (childNode.nodeType === childNode.ELEMENT_NODE) parseNode(childNode as HTMLElement);
-			continue;
-		}
+	if (node.nodeType === node.TEXT_NODE) {
+		if (ignoreTags.has(node.parentElement.localName)) return;
 		for (const filter of filters) {
-			if (childNode.textContent.toLowerCase().indexOf(filter) === -1) continue;
-			const length = childNode.textContent.replace(/\s/g, '').length;
+			if (node.textContent.toLowerCase().indexOf(filter) === -1) continue;
+			const length = node.textContent.replace(/\s/g, '').length;
 
 			// Floor the length to a multiple of the given floorFactor to prevent
 			// guessing based on string length.
 			const floorFactor = 5;
 			const flooredLength = Math.floor(length / floorFactor) * floorFactor;
-			childNode.textContent = "*".repeat(flooredLength);
+			node.textContent = "*".repeat(flooredLength);
 		}
-	}
-
-	if (node.localName === 'input' || node.localName === 'textarea') {
+	} else if (node.nodeType === node.ELEMENT_NODE &&
+		((node as HTMLElement).localName === 'input' || (node as HTMLElement).localName === 'textarea')) {
 		const input = node as HTMLInputElement;
 		for (const filter of filters) {
 			if (input.value.toLowerCase().indexOf(filter) === -1) continue;
 			input.style.visibility = 'hidden';
 			break;
 		}
+	} else {
+		for (let i = 0; i < node.childNodes.length; i++) {
+			const childNode = node.childNodes[i];
+			parseNode(childNode as HTMLElement);
+		}
 	}
-
-	if (typeof node.setAttribute === 'function') node.setAttribute('data-address-blocker-processed-value', x);
 }
 
 function scan(nodes: NodeListOf<HTMLElement>) {
@@ -63,7 +59,7 @@ function initObserver() {
 	const observer = new MutationObserver(callback);
 
 	// Start observing the target node for configured mutations
-	observer.observe(document.body, config);
+	observer.observe(document, config);
 }
 
 function getEnabled(): Promise<boolean> {
@@ -77,7 +73,7 @@ function getFilters(): Promise<string[]> {
 async function init(forceScan = false) {
 	if (!(await getEnabled())) return;
 	if (!filters) filters = await getFilters();
-	if (forceScan) scan(document.body.querySelectorAll('*'));
+	if (forceScan) parseNode(document);
 	initObserver();
 }
 
@@ -93,5 +89,3 @@ chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
 });
 
 init();
-
-window.addEventListener('loaded', () => init(true));
