@@ -1,7 +1,8 @@
-<div style="text-align: center">
+<h1 align="center">
     <img src="./doc/img/logo-128.png" alt="Logo" style="width:64px;height:64px">
-    <h1>Address Blocker</h1>
-</div>
+    <br>
+    Address Blocker
+</h1>
 
 Address Blocker is a browser extension that can be used to block your personal details in your browser.
 This can be useful to hide your address, phone number or any other personal details you want to hide during livestreams, meetings or other screen sharing events.
