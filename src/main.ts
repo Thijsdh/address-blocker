@@ -7,7 +7,7 @@ function parseNode(node: Node) {
 	if (node.nodeType === node.TEXT_NODE) {
 		if (ignoreTags.has(node.parentElement.localName)) return;
 		for (const filter of filters) {
-			if (node.textContent.toLowerCase().indexOf(filter) === -1) continue;
+			if (node.textContent.toLowerCase().indexOf(filter.toLowerCase()) === -1) continue;
 			const length = node.textContent.replace(/\s/g, '').length;
 
 			// Floor the length to a multiple of the given floorFactor to prevent
@@ -20,7 +20,7 @@ function parseNode(node: Node) {
 		((node as HTMLElement).localName === 'input' || (node as HTMLElement).localName === 'textarea')) {
 		const input = node as HTMLInputElement;
 		for (const filter of filters) {
-			if (input.value.toLowerCase().indexOf(filter) === -1) continue;
+			if (input.value.toLowerCase().indexOf(filter.toLowerCase()) === -1) continue;
 			input.style.visibility = 'hidden';
 			break;
 		}

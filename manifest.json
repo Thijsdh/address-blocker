@@ -1,25 +1,24 @@
 {
 	"manifest_version": 2,
 	"name": "Address Blocker",
-	"version": "1.0",
+	"version": "0.0.1",
 	"description": "Hide your private information in your browser.",
 	"icons": {
 		"48": "icons/icon-48.png"
 	},
 	"permissions": [
 		"tabs",
-		"storage",
-		"webRequest"
+		"storage"
 	],
 	"content_scripts": [
 		{
 			"matches": ["*://*/*"],
-			"js": ["dist/main.js"],
+			"js": ["main.js"],
 			"run_at": "document_start"
 		}
 	],
 	"background": {
-		"scripts": ["dist/background.js"],
+		"scripts": ["background.js"],
 		"persistent": true
 	},
 	"browser_action": {
@@ -27,7 +26,7 @@
 			"48": "icons/icon-disabled-48.png"
 		},
 		"default_title": "Address Blocker",
-		"default_popup": "dist/popups/main.html"
+		"default_popup": "popups/main.html"
 	},
 	"browser_specific_settings": {
 		"gecko": {

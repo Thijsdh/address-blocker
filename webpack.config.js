@@ -34,7 +34,8 @@ module.exports = {
 	plugins: [
 		new CopyPlugin({
 			patterns: [
-				{ from: "src/popups/", to: 'popups/' }
+				{ from: 'src/popups/', to: 'popups/' },
+				{ from: 'manifest.json', to: 'manifest.json' }
 			]
 		})
 	]
