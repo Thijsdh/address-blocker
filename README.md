@@ -24,6 +24,6 @@ Please use this extension with caution.**
 | ![Screenshot disabled](doc/img/screenshot-disabled.png) | ![Screenshot enabled](doc/img/screenshot-enabled.png) |
 
 ## Installation
-Address Blocker is not (yet) available in any major extension stores.
+Address Blocker can be downloaded from the Chrome Web Store.
 
-**TODO: create instructions for installing the extension manually.**
+[![Chrome Web Store Badge](doc/img/chrome-web-store-logo-small.png)](https://chrome.google.com/webstore/detail/address-blocker/lnpflflbkeikgehkdgfbnfnkcjagolib)
